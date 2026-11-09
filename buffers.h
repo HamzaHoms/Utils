@@ -32,15 +32,9 @@ typedef struct{
   uint8_t* _buf;
 }FIFO_t;
 
-#define FIFO_INIT(handle, size)\
-    static uint8_t handle##_buf[size];\
-    static FIFO_t handle = {\
-	._write_p = 0,\
-	._read_p = 0,\
-	._size = size,\
-	._buf = handle##_buf\
-    }
 
+
+void FIFO_Init(FIFO_t* fifo, uint8_t* fifo_buf, uint32_t fifo_size);
 BUFFER_Status FIFO_Append(FIFO_t* fifo, uint8_t* buf_in, uint32_t len);
 BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len);
 uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len);

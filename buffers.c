@@ -7,6 +7,19 @@
 
 #include "buffers.h"
 
+
+
+void FIFO_Init(FIFO_t* fifo, uint8_t* fifo_buf, uint32_t fifo_size)
+{
+  //initializes 'fifo' by setting 'fifo_buf' as the used buffer with 'fifo_size' size
+  //this means that 'fifo_buf' should stay in scope as long as 'fifo' is in use
+  fifo->_buf = fifo_buf;
+  fifo->_size = fifo_size;
+  fifo->_read_p = 0;
+  fifo->_write_p = 0;
+}
+
+
 BUFFER_Status FIFO_Append(FIFO_t* fifo, uint8_t* buf_in, uint32_t len)
 {
   //writes 'len' amount of bytes from 'buf_in' to the end of 'fifo'
@@ -37,6 +50,7 @@ BUFFER_Status FIFO_Append(FIFO_t* fifo, uint8_t* buf_in, uint32_t len)
 
   return BUF_OK;
 }
+
 
 BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
 {
@@ -69,6 +83,7 @@ BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
   return BUF_OK;
 }
 
+
 uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
 {
   //unguarded fifo pop
@@ -100,6 +115,7 @@ uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
   return act_len;
 }
 
+
 uint32_t FIFO_Peek(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
 {
   //fifo peek
@@ -127,6 +143,7 @@ uint32_t FIFO_Peek(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
   return act_len;
 }
 
+
 uint32_t FIFO_Discard(FIFO_t* fifo, uint32_t len)
 {
   //discards the first 'len' bytes in fifo
@@ -143,6 +160,7 @@ uint32_t FIFO_Discard(FIFO_t* fifo, uint32_t len)
   return disc_len;
 }
 
+
 uint32_t FIFO_GetEmpty(FIFO_t* fifo)
 {
   //returns the number of available bytes in the fifo
@@ -150,6 +168,7 @@ uint32_t FIFO_GetEmpty(FIFO_t* fifo)
   //it also effectively makes the max size of the fifo 1 less than what is stored in the '_size' variable
   return (fifo->_size - 1) - FIFO_GetCount(fifo);
 }
+
 
 uint32_t FIFO_GetCount(FIFO_t* fifo)
 {
@@ -169,6 +188,7 @@ uint32_t FIFO_GetCount(FIFO_t* fifo)
 
   return 0;
 }
+
 
 void FIFO_Clear(FIFO_t* fifo)
 {
