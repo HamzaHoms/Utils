@@ -19,7 +19,7 @@ typedef enum {
   BUF_ERROR = 1,
   BUF_UNAVAILABLE = 2,
   BUF_EMPTY = 3,
-  BUF_FULL = 4
+  BUF_FULL = 5
 }BUFFER_Status;
 
 //----------------------------------------------------------------------------------------------
