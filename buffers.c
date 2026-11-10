@@ -100,7 +100,7 @@ uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
     {
       memcpy(buf_out, fifo->_buf+loc_r_p, rp_to_end);
       loc_r_p = 0;
-      memcpy(buf_out+rp_to_end, fifo->_buf+loc_r_p, len-rp_to_end);
+      memcpy(buf_out+rp_to_end, fifo->_buf+loc_r_p, act_len-rp_to_end);
       loc_r_p += (act_len-rp_to_end);
     }
   ///no wrap-around path
