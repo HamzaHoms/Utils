@@ -46,7 +46,7 @@ BUFFER_Status FIFO_Append(FIFO_t* fifo, uint8_t* buf_in, uint32_t len)
       loc_w_p += len;
     }
 
-  __DMB();
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
 
   fifo->_write_p = loc_w_p;
 
@@ -80,7 +80,7 @@ BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
       loc_r_p += len;
     }
 
-  __DMB();
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
 
   fifo->_read_p = loc_r_p;
 
@@ -114,7 +114,7 @@ uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
       loc_r_p += act_len;
     }
 
-  __DMB();
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
 
   fifo->_read_p = loc_r_p;
 
