@@ -46,6 +46,8 @@ BUFFER_Status FIFO_Append(FIFO_t* fifo, uint8_t* buf_in, uint32_t len)
       loc_w_p += len;
     }
 
+  __DMB();
+
   fifo->_write_p = loc_w_p;
 
   return BUF_OK;
@@ -78,6 +80,8 @@ BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
       loc_r_p += len;
     }
 
+  __DMB();
+
   fifo->_read_p = loc_r_p;
 
   return BUF_OK;
@@ -109,6 +113,8 @@ uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
       memcpy(buf_out, fifo->_buf+loc_r_p, act_len);
       loc_r_p += act_len;
     }
+
+  __DMB();
 
   fifo->_read_p = loc_r_p;
 
