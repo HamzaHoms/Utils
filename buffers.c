@@ -62,6 +62,7 @@ BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
 
   uint32_t rp_to_end = fifo->_size - fifo->_read_p; //amount of bytes between end-of-buffer and read_p
   uint32_t loc_r_p = fifo->_read_p;
+  uint32_t init_r_p = loc_r_p;
 
   //wrap-around path
   if(rp_to_end <= len)
@@ -80,6 +81,8 @@ BUFFER_Status FIFO_Pop_G(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
 
   __atomic_thread_fence(__ATOMIC_SEQ_CST);
 
+  if(init_r_p != fifo->_read_p) return BUF_ERROR;
+
   fifo->_read_p = loc_r_p;
 
   return BUF_OK;
@@ -96,6 +99,7 @@ uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
   uint32_t act_len = fifo_cnt < len ? fifo_cnt : len;
   uint32_t rp_to_end = fifo->_size - fifo->_read_p; //amount of bytes between end-of-buffer and read_p
   uint32_t loc_r_p = fifo->_read_p;
+  uint32_t init_r_p = loc_r_p;
 
   //wrap-around path
   if(rp_to_end <= act_len)
@@ -113,6 +117,8 @@ uint32_t FIFO_Pop(FIFO_t* fifo, uint8_t* buf_out, uint32_t len)
     }
 
   __atomic_thread_fence(__ATOMIC_SEQ_CST);
+
+  if(init_r_p != fifo->_read_p) return 0;
 
   fifo->_read_p = loc_r_p;
 
